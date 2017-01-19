@@ -1,6 +1,6 @@
 class Card
 
-attr_accessor :type, :value
+  attr_accessor :type, :value
 
   def initialize(type, value)
     @type = type
