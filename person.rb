@@ -18,6 +18,10 @@ class Person
       @hand << deck.cards.delete_at(0)
     end
   end
+
+  def cpu_play
+    @hand.delete_at(0)
+  end
   
   def play
     position = 0
@@ -54,10 +58,6 @@ class Person
         return @hand.delete_at(position)
       end
     end
-  end
-
-  def cpu_play
-    @hand.delete_at(0)
   end
   
 end
