@@ -19,20 +19,33 @@ class Game
   
   def play
     4.times do
+      print "\n"
       @season = next_season
-      p "季節は：#{@season}"
+      puts "季節は：#{@season}"
       
       @player1.draw_from deck
       @player2.draw_from deck
       
       1.upto 5 do
+        print "P1：#{player1.cards_won.size}  P2: #{player2.cards_won.size}\n"
+        @player1.hand.each do |card|
+          print card.type + card.value.to_s + " "
+          if card.value != 10
+            printf " "
+          end
+        end
+        print "\n"
         p1s_card = @player1.play
-        p2s_card = @player2.play
+        p2s_card = @player2.cpu_play
         @board[0] << p1s_card
         @board[1] << p2s_card
         winner = evaluate_cards p1s_card, p2s_card
         if winner.class != Person
-          p "引き分けで次のメソッド行く"
+          if deck.cards.size == 0
+            nil
+          else
+            puts "引き分けです。次のカードを出してください。"
+          end
         else
           if winner == @player1
             @board.each do |bd|
@@ -55,7 +68,8 @@ class Game
   end
   
   def evaluate_cards card1, card2
-    p card1.type + card1.value.to_s + "と" + card2.type + card2.value.to_s
+    puts card1.type + card1.value.to_s + "と" + card2.type + card2.value.to_s
+    print "\n"
     type_winner = compare_types card1, card2
     if type_winner
       return type_winner
@@ -65,11 +79,11 @@ class Game
         return value_winner
       else
         if @board[0][1] == nil
-          return "未確定" # nil                
+          return nil # もう一回カードを出す必要がある 
         else
           2.times do @discard_pile << @board[0].delete_at(0) end
           2.times do @discard_pile << @board[1].delete_at(0) end
-          return "引き分けです" # nil
+          return nil # 引き分けか山札がなくなった
         end
       end
     end
@@ -109,12 +123,13 @@ class Game
   end
   
   def result
-    if @player1.score > @player2.score
-      p "プレイヤー１の勝ち"
-    elsif @player1.score < @player2.score
-      p "プレイヤー２の勝ち"
+    puts "P1: #{@player1.cards_won.size}  P2:#{@player2.cards_won.size}"
+    if @player1.cards_won.size > @player2.cards_won.size
+      puts "P1の勝ち"
+    elsif @player1.cards_won.size < @player2.cards_won.size
+      puts "P2の勝ち"
     else
-      p "引き分け"
+      puts "引き分け"
     end
   end
 
