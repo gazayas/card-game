@@ -26,7 +26,7 @@
 `$ ruby main.rb`
 
 #Rules
-The object of the game is to get the most cards.
+The object of the game is to get the most cards.<br/>
 <strong>春 = Spring</strong><br/>
 <strong>夏 = Summer</strong><br/>
 <strong>秋 = Fall</strong><br/>
