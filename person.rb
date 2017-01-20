@@ -21,7 +21,7 @@ class Person
   end
   
   def play
-    # ここで左右のキーで好きなカードを選ぶ
+    hand.delete_at(0)
   end
 
   def count_score

@@ -20,104 +20,78 @@ class Game
   def play
     4.times do
       @season = next_season
+      p "季節は：#{@season}"
+      
       @player1.draw_from deck
       @player2.draw_from deck
       
-      p "季節は：#{@season}"
-
-      5.times do
-        draw = play_cards
-        if draw
-          break if @player1.hand.count == 0 && @player2.hand.count
-          second_time = true # 最後の季節でカードが全部なくなったら、ゲームを終わらせてください
-          play_cards(second_time)
+      1.upto 5 do
+        p1s_card = @player1.play
+        p2s_card = @player2.play
+        @board[0] << p1s_card
+        @board[1] << p2s_card
+        winner = evaluate_cards p1s_card, p2s_card
+        if winner.class != Person
+          p "引き分けで次のメソッド行く"
+        else
+          if winner == @player1
+            @board.each do |bd|
+              bd.each do |b|
+               @player1.cards_won << b
+              end
+            end
+          elsif winner == @player2
+            @board.each do |bd|
+              bd.each do |b|
+               @player2.cards_won << b
+              end
+            end
+          end
+          @board[0].clear
+          @board[1].clear
         end
-
-        # カードはwinnerが全部もらうか、discard_pileに入る
-
-        # ボードをクリアする
-        @board[0] = []
-        @board[1] = []
       end
-    end
+    end   
   end
-
-  def play_cards(second_time=false)
-    #until @player1.hand.count == 0 && @player2.hand.count == 0
-    
-    # 五回目で引き分けになったら、次の@board[0]や@board[1]がnilになってしまう。
-    # ここは対応が必要
-    # hand.empty?だったら、deckにカードが残ってたら、次のturnに行きたい
-    # deckはもうなくなったら、discard_pileへ移っで、ゲームが終わる
-    # 二回カードを出して二回とも引き分けに終わったら、そのカード全部をdiscard_pileにする
-    if @player1.hand.empty?
-      p "引き分けに終わりました"
-      return false
-    end
-    @board[0] << @player1.hand.delete_at(0) # 実際に@player1.play
-    @board[1] << @player2.hand.delete_at(0) # 実際に@player2.play
-
-    # これが重複してるのでリファクトリングをしてください
-    if !second_time
-      p "card1 is " + @board[0][0].type + ":" + @board[0][0].value.to_s
-      p "card2 is " + @board[1][0].type + ":" + @board[1][0].value.to_s
-    
-      type_winner = compare_types @board[0][0], @board[1][0]
-      value_winner = compare_values @board[0][0], @board[1][0]
-
-      if type_winner.class != Array
-        winner = type_winner
-      else
-        if value_winner.class != Array
-          winner = value_winner
-        else
-          return true
-        end
-      end
+  
+  def evaluate_cards card1, card2
+    p card1.type + card1.value.to_s + "と" + card2.type + card2.value.to_s
+    type_winner = compare_types card1, card2
+    if type_winner
+      return type_winner
     else
-      p "card1 is " + @board[0][1].type + ":" + @board[0][1].value.to_s
-      p "card2 is " + @board[1][1].type + ":" + @board[1][1].value.to_s
-      
-      type_winner = compare_types @board[0][1], @board[1][1]
-      value_winner = compare_values @board[0][1], @board[1][1]
-
-      if type_winner.class != Array
-        winner = type_winner
+      value_winner = compare_values card1, card2
+      if value_winner
+        return value_winner
       else
-        if value_winner.class != Array
-          winner = value_winner
+        if @board[0][1] == nil
+          return "未確定" # nil                
         else
-          return "drawに終わりました"
+          2.times do @discard_pile << @board[0].delete_at(0) end
+          2.times do @discard_pile << @board[1].delete_at(0) end
+          return "引き分けです" # nil
         end
       end
     end
-
-    if winner.class != Array
-      p "the winner is " + winner.type + ":" + winner.value.to_s
-      draw = false
-    else
-      draw = true
-    end
-    print "\n"
   end
 
   def compare_types card1, card2
     if card1.type == @season && card2.type != @season
-      card1
+      @player1
     elsif card1.type != @season && card2.type == @season
-      card2
+      @player2
     else
-      [card1, card2]
+      nil
     end
   end
 
   def compare_values card1, card2
     if card1.value > card2.value
-      card1
+      @player1
     elsif card1.value < card2.value
-      card2
+      @player2
     else
-      [card1, card2]
+      nil
     end
   end
 

@@ -10,4 +10,6 @@ require './game'
 game = Game.new
 game.play
 
-p "デッキーの残りの枚数：" + game.deck.cards.size.to_s
+p "プレイヤー１の枚数：" + game.player1.cards_won.size.to_s
+p "プレイヤー２の枚数：" + game.player2.cards_won.size.to_s
+p "枚数合計：" + (game.player1.cards_won.size + game.player2.cards_won.size).to_s
