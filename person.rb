@@ -5,7 +5,6 @@ class Person
   def initialize
     @hand = Array.new
     @cards_won = Array.new
-    @score = 0
   end
 
   def shuffle deck
@@ -59,12 +58,6 @@ class Person
 
   def cpu_play
     @hand.delete_at(0)
-  end
-
-  def count_score
-    @cards_won.each do |cw|
-      @score += cw.value
-    end
   end
   
 end
