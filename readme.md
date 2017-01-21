@@ -32,7 +32,7 @@ The object of the game is to get the most cards.<br/>
 <strong>秋 = Fall</strong><br/>
 <strong>冬 = Winter</strong><br/>
 
-There are 10 cards for each season, resulting in 40 cards total.<br/>
+There are 10 cards for each season (40 cards total).<br/>
 The game is played in four rounds (seasons).<br/>
 At the beginning of each season, each player is dealt 5 cards.<br/>
 You can choose any card from your hand on the table.<br/>
