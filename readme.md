@@ -35,7 +35,7 @@ The object of the game is to get the most cards.<br/>
 There are 10 cards for each season (40 cards total).<br/>
 The game is played in four rounds (seasons).<br/>
 At the beginning of each season, each player is dealt 5 cards.<br/>
-You can choose any card from your hand on the table.<br/>
+You can choose any card from your hand and put it on the table.<br/>
 Whoever puts down the card with the biggest number wins,<br/>
 but if it is spring and you put down a spring card with a value lower than your opponents' card,<br/>
 you take the cards because seasons take precedence over numbers.<br/>
